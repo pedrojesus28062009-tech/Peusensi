@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEUSENSI V3 - ULTIMATE PANEL</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --red: #ff0000; --dark: #000; --card: #0a0a0a; --glow: rgba(255, 0, 0, 0.4); }
+        body { font-family: 'Inter', sans-serif; background: var(--dark); color: #fff; margin: 0; padding-bottom: 100px; }
+        
+        .header { text-align: center; padding: 30px 0; font-family: 'Orbitron', sans-serif; color: var(--red); text-shadow: 0 0 20px var(--red); }
+        
+        .dashboard { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat { background: var(--card); padding: 12px; border-radius: 10px; border: 1px solid #1a1a1a; font-size: 11px; }
+        .stat b { color: var(--red); display: block; font-size: 14px; }
+
+        .category-title { padding: 15px 15px 5px; color: var(--red); font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 15px; }
+        .opt-card { background: var(--card); border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+        .opt-card span { font-size: 11px; font-weight: bold; line-height: 1.2; }
+        
+        /* Switch Custom */
+        .switch { position: relative; display: inline-block; width: 34px; height: 18px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #222; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--red); }
+        input:checked + .slider:before { transform: translateX(16px); }
+
+        /* Loader */
+        .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
+        .progress-container { width: 80%; height: 8px; background: #111; border-radius: 10px; margin-top: 20px; border: 1px solid #222; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: var(--red); box-shadow: 0 0 15px var(--red); }
+        .loader-text { font-family: 'Orbitron', sans-serif; color: var(--red); font-size: 16px; margin-bottom: 5px; }
+
+        .btn-main { position: fixed; bottom: 20px; left: 15px; right: 15px; background: var(--red); color: #fff; border: none; padding: 20px; border-radius: 15px; font-weight: 900; font-family: 'Orbitron', sans-serif; font-size: 16px; cursor: pointer; box-shadow: 0 0 30px rgba(255,0,0,0.4); z-index: 500; }
+
+        .sensi-display { background: var(--card); margin: 15px; padding: 20px; border-radius: 15px; border: 1px solid var(--red); display: none; text-align: center; animation: zoomIn 0.5s; }
+        .sensi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .sensi-val { background: #000; padding: 10px; border-radius: 8px; font-weight: bold; color: var(--red); border: 1px solid #1a1a1a; }
+        
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="header">PEUSENSI V3</div>
+
+    <div class="dashboard">
+        <div class="stat">SISTEMA<b id="device">Detectando...</b></div>
+        <div class="stat">RENDERIZADOR<b id="gpu">Buscando GPU...</b></div>
+        <div class="stat">FPS REAL TIME<b id="fps">60</b></div>
+        <div class="stat">BATERIA ATUAL<b id="bat">--%</b></div>
+    </div>
+
+    <!-- PERFORMANCE -->
+    <div class="category-title">⚡ Performance & FPS (12 OPÇÕES)</div>
+    <div class="options-grid">
+        <div class="opt-card"><span>FPS Unlocker 120</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>GPU Overclock</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>RAM Cleaner Pro</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Anti-Lag V3</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Data Cache Clear</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Smooth Graphics</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>CPU Cooler Mode</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Battery Saver OFF</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>High Priority Task</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Kernel Tuning</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Shader Pre-load</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>OpenGL 3.1 Force</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+    </div>
+
+    <!-- TOUCH & MIRA -->
+    <div class="category-title">🎯 Touch & Mira (12 OPÇÕES)</div>
+    <div class="options-grid">
+        <div class="opt-card"><span>Touch Speed Max</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Zero Delay Touch</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Aim Assist 95%</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Red Dot Fix</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>No Recoil Stabilizer</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Calibrar Mira 2x</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Calibrar Mira 4x</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Macro Sensitivity</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Auto-Click Respon.</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Pixel Precision</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Injetar Sensi 200</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Headshot Priority</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+    </div>
+
+    <!-- REDE -->
+    <div class="category-title">🌐 Rede & Ping (6 OPÇÕES)</div>
+    <div class="options-grid">
+        <div class="opt-card"><span>DNS Gaming 1.1.1.1</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Ping Stabilizer</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Anti-Buffer Bloat</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>WiFi Booster</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>4G/5G Optimization</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="opt-card"><span>Package Priority</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+    </div>
+
+    <div class="sensi-display" id="sensiPanel">
+        <h3 style="margin:0; font-family: 'Orbitron'; font-size: 14px;">CONFIGURAÇÃO GERADA</h3>
+        <div class="sensi-grid">
+            <div class="sensi-val">GERAL: 198</div>
+            <div class="sensi-val">DOT: 189</div>
+            <div class="sensi-val">2X: 195</div>
+            <div class="sensi-val">4X: 200</div>
+        </div>
+        <p style="color:var(--red); font-weight:bold; margin-top:15px; font-size: 14px;">DPI: 720 | BOTÃO: 52%</p>
+    </div>
+
+    <button class="btn-main" onclick="startInjection()">INJETAR OTIMIZAÇÃO TOTAL</button>
+
+    <div class="loader-overlay" id="loader">
+        <div id="status-txt" class="loader-text">INICIALIZANDO...</div>
+        <div id="perc-txt" style="color:#fff; font-size: 12px;">0%</div>
+        <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
+    </div>
+
+    <script>
+        // Detector de Modelo e GPU
+        function detectDevice() {
+            const ua = navigator.userAgent;
+            document.getElementById('device').innerText = ua.includes("Android") ? "Android OS" : "Mobile Device";
+            try {
+                const gl = document.createElement('canvas').getContext('webgl');
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                document.getElementById('gpu').innerText = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL).split(' ').pop();
+            } catch(e) { document.getElementById('gpu').innerText = "GPU Adreno/Mali"; }
+        }
+        detectDevice();
+
+        navigator.getBattery().then(b => document.getElementById('bat').innerText = (b.level * 100).toFixed(0) + "%");
+        setInterval(() => { document.getElementById('fps').innerText = Math.floor(Math.random() * (62 - 59) + 59); }, 1000);
+
+        function startInjection() {
+            const loader = document.getElementById('loader');
+            const bar = document.getElementById('bar');
+            const perc = document.getElementById('perc-txt');
+            const status = document.getElementById('status-txt');
+            
+            loader.style.display = 'flex';
+            let width = 0;
+            const msgs = ["LIMPANDO RAM...", "OTIMIZANDO GPU...", "CALIBRANDO TOUCH...", "ESTABILIZANDO PING...", "INJETANDO SENSI 200...", "PRONTO!"];
+            
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        document.getElementById('sensiPanel').style.display = 'block';
+                        window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+                    }, 600);
+                } else {
+                    width++;
+                    bar.style.width = width + '%';
+                    perc.innerText = width + '%';
+                    status.innerText = msgs[Math.floor(width / 18)] || "FINALIZANDO...";
+                }
+            }, 60);
+        }
+    </script>
+</body>
+                                                                                  </html>
+                                                                                  
